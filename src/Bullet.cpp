@@ -12,7 +12,7 @@ Bullet::Bullet()
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
-	setType(PLANE);
+	setType(BULLET);
 }
 
 Bullet::~Bullet()
@@ -30,7 +30,8 @@ void Bullet::draw()
 
 void Bullet::update()
 {
-	getTransform()->position.y += Config::BULLET_SPEED;
+	getRigidBody()->velocity.y += (-Config::g / Config::FPS) * Config::METERS_TO_PIXELS;
+	getTransform()->position.y += getRigidBody()->velocity.y;
 }
 
 void Bullet::clean()

@@ -12,10 +12,12 @@ public:
 	static const int SCREEN_HEIGHT = 600;
 	static const int FPS = 60;
 
+	static const int NUMBER_OF_BULLETS = 15;
+
 	static constexpr float g = -9.8f;
 	static constexpr float BULLET_SPEED = 3.0f;
 	
-	//static constexpr float MET_TO_PIX = (SCREEN_WIDTH - START_POINT) / MAX_DIST;
+	static constexpr float METERS_TO_PIXELS = 3;
 	//static constexpr float PIX_TO_MET = 1 / MET_TO_PIX;
 	
 	// Define Custom Deleters for shared_ptr types

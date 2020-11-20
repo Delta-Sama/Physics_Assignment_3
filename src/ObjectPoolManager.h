@@ -1,6 +1,9 @@
 #pragma once
 #ifndef __OBJECTPOOL_H__
 #define __OBJECTPOOL_H__
+#include <cassert>
+#include <iostream>
+#include <list>
 
 template <class T>
 struct PoolObject
@@ -13,18 +16,24 @@ template <class T>
 class ObjectPool
 {
 public:
-	static void Init(int size);
-	static void Update();
-	static void Clean();
+	ObjectPool() : pool(nullptr), m_size(0) {}
+	ObjectPool(int size, bool deactivate(T*));
+	
+	void Update();
+	void Draw();
+	void Clean();
+
+	void UnbindUsage(PoolObject<T>* object);
+
+	T* GetFreeObject();
 	
 private:
-	ObjectPool() {}
-	
-	static PoolObject<T>* pool;
-	static int m_size;
-};
 
-template<typename T>
-using Pool = ObjectPool<T>;
+	bool (*deactivate_test)(T*);
+	
+	std::list<PoolObject<T>*> free_objects;
+	PoolObject<T>* pool;
+	int m_size;
+};
 
 #endif

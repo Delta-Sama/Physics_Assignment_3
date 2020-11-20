@@ -26,7 +26,7 @@ bool CollisionManager::squaredRadiusCheck(GameObject* object1, GameObject* objec
 
 			object2->getRigidBody()->isColliding = true;
 
-			switch (object2->getType()) {
+			/*switch (object2->getType()) {
 			case TARGET:
 				std::cout << "Collision with Target!" << std::endl;
 				SoundManager::Instance().playSound("yay", 0);
@@ -36,7 +36,7 @@ bool CollisionManager::squaredRadiusCheck(GameObject* object1, GameObject* objec
 			default:
 				
 				break;
-			}
+			}*/
 
 			return true;
 		}
@@ -70,7 +70,7 @@ bool CollisionManager::AABBCheck(GameObject* object1, GameObject* object2)
 
 			object2->getRigidBody()->isColliding = true;
 
-			switch (object2->getType()) {
+			/*switch (object2->getType()) {
 			case TARGET:
 				std::cout << "Collision with Target!" << std::endl;
 				SoundManager::Instance().playSound("yay", 0);
@@ -78,7 +78,7 @@ bool CollisionManager::AABBCheck(GameObject* object1, GameObject* object2)
 			default:
 				
 				break;
-			}
+			}*/
 
 			return true;
 		}
@@ -176,7 +176,7 @@ int CollisionManager::minSquaredDistanceLineLine(glm::vec2 line1_start, glm::vec
 
 bool CollisionManager::lineAABBCheck(Ship* object1, GameObject* object2)
 {
-	const auto lineStart = object1->getTransform()->position;
+	/*/*const auto lineStart = object1->getTransform()->position;
 	const auto lineEnd = object1->getTransform()->position + object1->getCurrentDirection() * 100.0f;
 	// aabb
 	const auto boxWidth = object2->getWidth();
@@ -187,7 +187,7 @@ bool CollisionManager::lineAABBCheck(Ship* object1, GameObject* object2)
 
 	if (lineRectCheck(lineStart, lineEnd, boxStart, boxWidth, boxHeight))
 	{
-		switch (object2->getType()) {
+		/*switch (object2->getType()) {
 		case TARGET:
 			std::cout << "Collision with Obstacle!" << std::endl;
 			SoundManager::Instance().playSound("yay", 0);
@@ -201,6 +201,7 @@ bool CollisionManager::lineAABBCheck(Ship* object1, GameObject* object2)
 		return true;
 	}
 
+	return false;*/
 	return false;
 }
 
@@ -239,7 +240,7 @@ bool CollisionManager::circleAABBCheck(GameObject* object1, GameObject* object2)
 			const auto dot = Util::dot(attackVector, normal);
 			const auto angle = acos(dot / Util::magnitude(attackVector)) * Util::Rad2Deg;
 
-			switch (object2->getType()) {
+			/*switch (object2->getType()) {
 			case TARGET:
 				std::cout << "Collision with Planet!" << std::endl;
 				SoundManager::Instance().playSound("yay", 0);
@@ -283,7 +284,7 @@ bool CollisionManager::circleAABBCheck(GameObject* object1, GameObject* object2)
 			default:
 				
 				break;
-			}
+			}*/
 
 			return true;
 		}

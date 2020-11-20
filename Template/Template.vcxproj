@@ -163,6 +163,7 @@
     <ClCompile Include="..\src\CollisionManager.cpp" />
     <ClCompile Include="..\src\Enemy.cpp" />
     <ClCompile Include="..\src\Bullet.cpp" />
+    <ClCompile Include="..\src\MathManager.cpp" />
     <ClCompile Include="..\src\ObjectPoolManager.cpp" />
     <ClCompile Include="..\src\Sprite.cpp" />
     <ClCompile Include="..\src\UIControl.cpp" />
@@ -175,7 +176,6 @@
     <ClCompile Include="..\src\Label.cpp" />
     <ClCompile Include="..\src\Scene1.cpp" />
     <ClCompile Include="..\src\main.cpp" />
-    <ClCompile Include="..\src\WayPoint.cpp" />
     <ClCompile Include="..\src\Player.cpp" />
     <ClCompile Include="..\src\Renderer.cpp" />
     <ClCompile Include="..\src\Scene.cpp" />
@@ -184,7 +184,6 @@
     <ClCompile Include="..\src\EventManager.cpp" />
     <ClCompile Include="..\src\SpriteSheet.cpp" />
     <ClCompile Include="..\src\StartScene.cpp" />
-    <ClCompile Include="..\src\Target.cpp" />
     <ClCompile Include="..\src\TextureManager.cpp" />
     <ClCompile Include="..\src\Util.cpp" />
   </ItemGroup>
@@ -197,6 +196,7 @@
     <ClInclude Include="..\src\Config.h" />
     <ClInclude Include="..\src\Enemy.h" />
     <ClInclude Include="..\src\Bullet.h" />
+    <ClInclude Include="..\src\MathManager.h" />
     <ClInclude Include="..\src\ObjectPoolManager.h" />
     <ClInclude Include="..\src\SoundType.h" />
     <ClInclude Include="..\src\Sprite.h" />
@@ -214,7 +214,6 @@
     <ClInclude Include="..\src\Label.h" />
     <ClInclude Include="..\src\MouseButtons.h" />
     <ClInclude Include="..\src\Scene1.h" />
-    <ClInclude Include="..\src\WayPoint.h" />
     <ClInclude Include="..\src\Player.h" />
     <ClInclude Include="..\src\PlayerAnimationState.h" />
     <ClInclude Include="..\src\Renderer.h" />
@@ -226,7 +225,6 @@
     <ClInclude Include="..\src\SoundManager.h" />
     <ClInclude Include="..\src\SpriteSheet.h" />
     <ClInclude Include="..\src\StartScene.h" />
-    <ClInclude Include="..\src\Target.h" />
     <ClInclude Include="..\src\TextureManager.h" />
     <ClInclude Include="..\src\Transform.h" />
     <ClInclude Include="..\src\Util.h" />

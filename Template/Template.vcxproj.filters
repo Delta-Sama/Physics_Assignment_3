@@ -96,9 +96,6 @@
     <ClCompile Include="..\src\CollisionManager.cpp">
       <Filter>Managers\Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Target.cpp">
-      <Filter>Game Objects\Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ship.cpp">
       <Filter>Game Objects\Source</Filter>
     </ClCompile>
@@ -135,9 +132,6 @@
     <ClCompile Include="..\src\Util.cpp">
       <Filter>Core\Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\WayPoint.cpp">
-      <Filter>Game Objects\Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Background.cpp">
       <Filter>UI Objects\Source</Filter>
     </ClCompile>
@@ -148,6 +142,9 @@
       <Filter>Game Objects\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ObjectPoolManager.cpp">
+      <Filter>Managers\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MathManager.cpp">
       <Filter>Managers\Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -224,9 +221,6 @@
     <ClInclude Include="..\src\ship.h">
       <Filter>Game Objects\Header</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Target.h">
-      <Filter>Game Objects\Header</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Animation.h">
       <Filter>Core\Header</Filter>
     </ClInclude>
@@ -260,9 +254,6 @@
     <ClInclude Include="..\src\Util.h">
       <Filter>Core\Header</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\WayPoint.h">
-      <Filter>Game Objects\Header</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Background.h">
       <Filter>UI Objects\Header</Filter>
     </ClInclude>
@@ -273,6 +264,9 @@
       <Filter>Game Objects\Header</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ObjectPoolManager.h">
+      <Filter>Managers\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\MathManager.h">
       <Filter>Managers\Header</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,12 +2,11 @@
 #ifndef __PLAY_SCENE__
 #define __PLAY_SCENE__
 
-#include "Background.h"
+#include "Bullet.h"
 #include "Scene.h"
-#include "WayPoint.h"
-#include "Player.h"
-#include "Button.h"
-#include "Enemy.h"
+#include "ObjectPoolManager.h"
+#include "ObjectPoolManager.cpp"
+#include "ship.h"
 
 class Scene1 : public Scene
 {
@@ -22,6 +21,9 @@ public:
 	virtual void handleEvents() override;
 	virtual void start() override;
 private:
+	ObjectPool<Bullet>* m_pool;
+	Ship* m_ship;
+	int m_add_cooldown;
 	
 };
 
