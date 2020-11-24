@@ -11,5 +11,10 @@ struct RigidBody
 	glm::vec2 direction;
 	glm::vec2 force;
 	bool isColliding;
+
+	glm::vec2 getMomentum()
+	{
+		return glm::vec2(mass * velocity.x, mass * velocity.y);
+	}
 };
 #endif /* defined (__RIGID_BODY__) */

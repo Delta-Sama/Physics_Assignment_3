@@ -147,6 +147,15 @@
     <ClCompile Include="..\src\MathManager.cpp">
       <Filter>Managers\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Scene2.cpp">
+      <Filter>Scenes\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\BouncingBall.cpp">
+      <Filter>Game Objects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\AdvancedCollisionManager.cpp">
+      <Filter>Managers\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\GameObjectType.h">
@@ -267,6 +276,15 @@
       <Filter>Managers\Header</Filter>
     </ClInclude>
     <ClInclude Include="..\src\MathManager.h">
+      <Filter>Managers\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Scene2.h">
+      <Filter>Scenes\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BouncingBall.h">
+      <Filter>Game Objects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\AdvancedCollisionManager.h">
       <Filter>Managers\Header</Filter>
     </ClInclude>
   </ItemGroup>

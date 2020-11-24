@@ -29,7 +29,7 @@ void StartScene::update()
 		m_pStartButton->getTransform()->position.y += 14.0f;
 	}
 	else if (cur_frame == 0) {
-		TheGame::Instance()->changeSceneState(PLAY_SCENE);
+		TheGame::Instance()->changeSceneState(PLAY2_SCENE);
 	}
 }
 
@@ -50,7 +50,11 @@ void StartScene::handleEvents()
 
 	if(EventManager::Instance().isKeyDown(SDL_SCANCODE_1))
 	{
-		TheGame::Instance()->changeSceneState(PLAY_SCENE);
+		TheGame::Instance()->changeSceneState(PLAY1_SCENE);
+	}
+	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_2))
+	{
+		TheGame::Instance()->changeSceneState(PLAY2_SCENE);
 	}
 }
 

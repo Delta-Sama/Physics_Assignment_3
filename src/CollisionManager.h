@@ -9,6 +9,7 @@
 #include "ship.h"
 #include <GLM/gtx/norm.hpp>
 #include "SoundManager.h"
+#include "AdvancedCollisionManager.h"
 
 class CollisionManager
 {

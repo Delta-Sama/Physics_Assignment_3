@@ -14,6 +14,8 @@ public:
 
 	static const int NUMBER_OF_BULLETS = 15;
 
+	static constexpr float ENERGY_LOSS = 0.85f;
+	
 	static constexpr float g = -9.8f;
 	static constexpr float BULLET_SPEED = 3.0f;
 	
