@@ -10,6 +10,7 @@ struct PoolObject
 {
 	T* object;
 	bool inUse;
+	bool used;
 };
 
 template <class T>
@@ -22,10 +23,13 @@ public:
 	void Update();
 	void Draw();
 	void Clean();
-
+	
 	void UnbindUsage(PoolObject<T>* object);
 
 	T* GetFreeObject();
+	PoolObject<T>* GetObjectsPool() { return pool; }
+
+	int GetSize() { return m_size; }
 	
 private:
 

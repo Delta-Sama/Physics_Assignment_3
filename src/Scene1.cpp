@@ -29,6 +29,9 @@ void Scene1::start()
 	m_ship = new Ship;
 	addChild(m_ship);
 	m_ship->getTransform()->position = EventManager::Instance().getMousePosition();
+
+	SoundManager::Instance().setSoundVolume(5);
+	SoundManager::Instance().load("../Assets/audio/yay.ogg", "explosion", SoundType::SOUND_SFX);
 }
 
 void Scene1::update()
@@ -46,6 +49,19 @@ void Scene1::update()
 		{
 			bullet->getRigidBody()->velocity = glm::vec2(0,0);
 			bullet->getTransform()->position = glm::vec2(rand() % Config::SCREEN_WIDTH,0);
+		}
+	}
+
+	for (int i = 0; i < m_pool->GetSize(); i++)
+	{
+		PoolObject<Bullet>* obj = &(m_pool->GetObjectsPool()[i]);
+		if (obj->inUse && !obj->used)
+		{
+			if (CollisionManager::AABBCheck(obj->object,m_ship))
+			{
+				obj->used = true;
+				SoundManager::Instance().playSound("explosion", 0);
+			}
 		}
 	}
 }

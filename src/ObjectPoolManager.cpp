@@ -13,8 +13,9 @@ ObjectPool<T>::ObjectPool(int size, bool deactivate(T*))
 	for (int i = 0; i < m_size; i++)
 	{
 		pool[i].object = new T();
-		pool[i].inUse = true;
-
+		pool[i].inUse = false;
+		pool[i].used = false;
+		
 		free_objects.push_back(&pool[i]);
 	}
 }
@@ -71,6 +72,7 @@ T* ObjectPool<T>::GetFreeObject()
 	{
 		PoolObject<T>* temp = free_objects.back();
 		temp->inUse = true;
+		temp->used = false;
 		free_objects.pop_back();
 		return temp->object;
 	}
