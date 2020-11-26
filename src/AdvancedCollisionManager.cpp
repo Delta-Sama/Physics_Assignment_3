@@ -12,8 +12,12 @@ AdvancedCollisionManager::AdvancedCollisionManager()
 
 AdvancedCollisionManager::~AdvancedCollisionManager() = default;
 
-float AdvancedCollisionManager::SweptAABB(GameObject* obj, glm::vec2& normal)
+Manifold AdvancedCollisionManager::SweptAABB(GameObject* obj)
 {
+	Manifold result;
+	result.A = obj;
+	result.B = nullptr;
+	
 	float xEntryDist, yEntryDist;
 	float xExitDist, yExitDist;
 
@@ -64,138 +68,46 @@ float AdvancedCollisionManager::SweptAABB(GameObject* obj, glm::vec2& normal)
 	// No collision case
 	if (xEntryTime < 0.0f && yEntryTime < 0.0f || xEntryTime > 1.0f && yEntryTime > 1.0f)
 	{
-		normal.x = 0.0f;
-		normal.y = 0.0f;
-		return 1.0f;
+		result.normal.x = 0.0f;
+		result.normal.y = 0.0f;
+		result.collisionTime = 1.0f;
+		return result;
 	}
 	
 	// Collision was found
-	normal.x = 0.0f;
-	normal.y = 0.0f;
+	result.normal.x = 0.0f;
+	result.normal.y = 0.0f;
 
 	if (xEntryTime < yEntryTime)
-		(xEntryDist > 0.0f) ? normal.x = -1.0f : normal.x = 1.0f;
+		(xEntryDist > 0.0f) ? result.normal.x = -1.0f : result.normal.x = 1.0f;
 	else
-		(yEntryDist > 0.0f) ? normal.y = -1.0f : normal.y = 1.0f;
+		(yEntryDist > 0.0f) ? result.normal.y = -1.0f : result.normal.y = 1.0f;
 
-	return entryTime;
+	result.collisionTime = entryTime;
+	
+	return result;
 }
 
-float AdvancedCollisionManager::SweptAABB(GameObject* obj1, GameObject* obj2, glm::vec2& normal)
+Manifold AdvancedCollisionManager::SweptAABB(GameObject* obj1, GameObject* obj2)
 {
-	/*if (obj1->getShape() == CollisionShape::CIRCLE && obj2->getShape() == CollisionShape::RECTANGLE) // Circle-Rect
-		return AdvancedCollisionManager::SweptCircleRect(obj1, obj2, normal);
+	Manifold result;
+	
+	if (obj1->getShape() == CollisionShape::CIRCLE && obj2->getShape() == CollisionShape::RECTANGLE) // Circle-Rect
+		result = AdvancedCollisionManager::SweptCircleRect(obj1, obj2);
 	else if (obj1->getShape() == CollisionShape::RECTANGLE && obj2->getShape() == CollisionShape::CIRCLE) // Rect-Circle
-		return AdvancedCollisionManager::SweptCircleRect(obj2, obj1, normal);
-	else if (obj1->getShape() == CollisionShape::CIRCLE && obj2->getShape() == CollisionShape::CIRCLE) // Circle-Circle
-		return AdvancedCollisionManager::SweptCircleCircle(obj2, obj1, normal);*/
+		result = AdvancedCollisionManager::SweptCircleRect(obj2, obj1);
+	else
+		result = AdvancedCollisionManager::SweptRectRect(obj2, obj1);
 
-	const float penetration = AdvancedCollisionManager::SweptCircleCircle(obj2, obj1, normal);
-	ResolveCollision(obj1, obj2, normal);
-	PositionalCorrection(obj1, obj2, normal, penetration);
-	
-	return 1.0f;
+	return result;
 }
 
-float AdvancedCollisionManager::SweptRectRect(GameObject* obj1, GameObject* obj2, glm::vec2& normal)
+Manifold AdvancedCollisionManager::SweptRectRect(GameObject* obj1, GameObject* obj2)
 {
-	return 1.0f;
-}
-
-float AdvancedCollisionManager::SweptCircleRect(GameObject* obj1, GameObject* obj2, glm::vec2& normal)
-{
-	return 1.0f;
-}
-
-float AdvancedCollisionManager::SweptCircleCircle(GameObject* obj1, GameObject* obj2, glm::vec2& normal)
-{
-	// Setup a couple pointers to each object
-	GameObject* A = obj1;
-	GameObject* B = obj2;
+	Manifold result;
+	result.A = obj1;
+	result.B = obj2;
 	
-	// Vector from A to B
-	glm::vec2 n = B->getTransform()->position - A->getTransform()->position;
-
-	const float r = (float)A->getWidth() / 2.0f + (float)B->getWidth() / 2.0f;
-	const float sq_r = r * r;
-	
-	const float sq_dist = n.x * n.x + n.y * n.y;
-
-	if (sq_dist > sq_r) // No collision
-		return 0.0f;
-
-	// Circles have collided, now compute manifold
-	float d = sqrt(sq_dist); // perform actual sqrt
-
-	// If distance between circles is not zero
-	if (d != 0.0f)
-	{
-		// Make the unit normal vector
-		normal = n / d;
-		std::cout << "Normal: " << normal.x << ", " << normal.y << "\n";
-		Util::QueueLine(A->getTransform()->position, A->getTransform()->position + normal * 40.0f, { 1,0,0,1 });
-		// Penetration is difference between radius and distance
-		return r - d;
-	}
-	else // Circles are on same position
-	{
-		// Choose random (but consistent) values
-		normal = glm::vec2(1, 0);
-		return (float)A->getWidth() / 2.0f;
-	}
-}
-
-void AdvancedCollisionManager::PositionalCorrection(GameObject* A, GameObject* B, glm::vec2 normal, float penetration)
-{
-	const float percent = 0.3f; // usually 20% to 80%
-	const float slop = 0.05f; // usually 0.01 to 0.1
-	glm::vec2 correction = (std::max(penetration - slop, 0.0f)
-	/ (A->getRigidBody()->inverse_mass + B->getRigidBody()->inverse_mass)) * normal * percent;
-	A->getTransform()->position -= A->getRigidBody()->inverse_mass * correction;
-	B->getTransform()->position += B->getRigidBody()->inverse_mass * correction;
-}
-
-void AdvancedCollisionManager::ResolveCollision(GameObject* A, GameObject* B, glm::vec2 normal)
-{
-	// Calculate relative velocity
-	const glm::vec2 relative_velocity = B->getRigidBody()->velocity - A->getRigidBody()->velocity;
-
-	// Calculate relative velocity in terms of the normal direction
-	
-	const float velAlongNormal = MAMA::DotProduct(relative_velocity, normal);
-
-	// Do not resolve if velocities are separating
-	if (velAlongNormal > 0)
-		return;
-	
-	std::cout << "Velocity along normal: " << velAlongNormal << "\n";
-	
-	// Calculate restitution
-	const float e = std::min(A->getRigidBody()->elasticity, B->getRigidBody()->elasticity);
-
-	// Calculate impulse scalar
-	float j = -(1.0f + e) * velAlongNormal;
-	j /= A->getRigidBody()->inverse_mass + B->getRigidBody()->inverse_mass;
-	
-	// Apply impulse
-	const glm::vec2 impulse = normal * -j;
-	
-	A->getRigidBody()->velocity -= A->getRigidBody()->inverse_mass * impulse;
-	B->getRigidBody()->velocity += B->getRigidBody()->inverse_mass * impulse;
-
-	A->getTransform()->position.x += A->getRigidBody()->velocity.x;
-	B->getTransform()->position.y += B->getRigidBody()->velocity.y;
-	/*const float mass_sum = A->getRigidBody()->mass + B->getRigidBody()->mass;
-	float ratio = A->getRigidBody()->mass / mass_sum;
-	A->getRigidBody()->velocity -= ratio * impulse;
-
-	ratio = B->getRigidBody()->mass / mass_sum;
-	B->getRigidBody()->velocity += ratio * impulse;*/
-}
-
-
-/*float AdvancedCollisionManager::SweptRectRect(GameObject* obj1, GameObject* obj2, glm::vec2& normal)
-{
 	float xEntryDist, yEntryDist;
 	float xExitDist, yExitDist;
 
@@ -254,27 +166,34 @@ void AdvancedCollisionManager::ResolveCollision(GameObject* A, GameObject* B, gl
 	// No collision case
 	if (entryTime > exitTime || xEntryTime < 0.0f && yEntryTime < 0.0f || xEntryTime > 1.0f || yEntryTime > 1.0f)
 	{
-		normal.x = 0.0f;
-		normal.y = 0.0f;
-		return 1.0f;
+		result.normal.x = 0.0f;
+		result.normal.y = 0.0f;
+		result.collisionTime = 1.0f;
+		return result;
 	}
 
 	// Collision was found
-	normal.x = 0.0f;
-	normal.y = 0.0f;
+	result.normal.x = 0.0f;
+	result.normal.y = 0.0f;
 
 	std::cout << "Collision found\n";
 	
 	if (xEntryTime > yEntryTime)
-		(xEntryDist > 0.0f) ? normal.x = -1.0f : normal.x = 1.0f;
+		(xEntryDist > 0.0f) ? result.normal.x = -1.0f : result.normal.x = 1.0f;
 	else
-		(yEntryDist > 0.0f) ? normal.y = -1.0f : normal.y = 1.0f;
+		(yEntryDist > 0.0f) ? result.normal.y = -1.0f : result.normal.y = 1.0f;
 
-	return entryTime;
+	result.collisionTime = entryTime;
+	
+	return result;
 }
 
-float AdvancedCollisionManager::SweptCircleRect(GameObject* obj1, GameObject* obj2, glm::vec2& normal)
+Manifold AdvancedCollisionManager::SweptCircleRect(GameObject* obj1, GameObject* obj2)
 {
+	Manifold result;
+	result.A = obj1;
+	result.B = obj2;
+	
 	const glm::vec2 vel1 = obj1->getRigidBody()->velocity;
 	const glm::vec2 vel2 = obj1->getRigidBody()->velocity;
 
@@ -307,46 +226,43 @@ float AdvancedCollisionManager::SweptCircleRect(GameObject* obj1, GameObject* ob
 	// If no collision
 	if (sq_distance > radius * radius)
 	{
-		normal.x = 0.0f;
-		normal.y = 0.0f;
-		return 1.0f;
+		result.normal.x = 0.0f;
+		result.normal.y = 0.0f;
+		result.collisionTime = 1.0f;
+		return result;
 	}
-
+	
 	// Determine the normal
 	glm::vec2 dist;
 	glm::vec2 border;
 	
 	if (abs(distX) > abs(distY))
 	{
-		normal.x = (distX > 0.0f ? -1.0f : 1.0f);
-		normal.y = 0.0f;
+		result.normal.x = (distX > 0.0f ? -1.0f : 1.0f);
+		result.normal.y = 0.0f;
 
 		border = { 0, 1 };
 
-		dist = { abs(movedPos1.x - (pos2.x + normal.x * size2.x / 2)) * -normal.x, 0.0f };
+		dist = { abs(movedPos1.x - (movedPos2.x + result.normal.x * size2.x / 2)) * -result.normal.x, 0.0f };
 	}
 	else
 	{
-		normal.x = 0.0f;
-		normal.y = (distY > 0.0f ? -1.0f : 1.0f);
+		result.normal.x = 0.0f;
+		result.normal.y = (distY > 0.0f ? -1.0f : 1.0f);
 		
 		border = { 1, 0 };
 		
-		dist = { 0.0f, abs(movedPos1.y - (pos2.y + normal.y * size2.y / 2)) * -normal.y };
+		dist = { 0.0f, abs(movedPos1.y - (movedPos2.y + result.normal.y * size2.y / 2)) * -result.normal.y };
 	}
 
 
 	float angle = acos((vel1.x * border.x + vel1.y * border.y) /
 		(sqrt(vel1.x * vel1.x + vel1.y * vel1.y) * sqrt(border.x * border.x + border.y * border.y)));
 	
-	std::cout << "Normal: " << normal.x << ", " << normal.y << "\n";
-	std::cout << "Angle: " << MAMA::RadToDeg(angle) << "\n";
-	
-	float odd_move = (radius + glm::dot(dist, normal)) / sin(angle);
+	float odd_move = (radius + glm::dot(dist, result.normal)) / sin(angle);
 	float speed = sqrt(vel1.x * vel1.x + vel1.y * vel1.y);
+	std::cout << "odd_move: " << odd_move << "\n";
+	result.collisionTime = std::clamp(1.0f - odd_move / speed,0.0f,0.99f);
 
-	std::cout << "odd/speed = " << odd_move / speed << "\n";
-
-	return (1.0f - odd_move / speed);
+	return result;
 }
-*/

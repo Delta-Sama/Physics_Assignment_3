@@ -15,8 +15,8 @@ struct Manifold
 {
 	GameObject* A;
 	GameObject* B;
-	float penetration;
 	glm::vec2 normal;
+	float collisionTime;
 };
 
 class PhysicsManager

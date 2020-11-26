@@ -5,6 +5,7 @@
 #include "Renderer.h"
 
 std::vector<Line> Util::m_lines;
+std::vector<Circle> Util::m_circles;
 
 const float Util::EPSILON = glm::epsilon<float>();
 const float Util::Deg2Rad = glm::pi<float>() / 180.0f;
@@ -24,11 +25,21 @@ void Util::DrawQueue()
 		DrawLine(line.start, line.end, line.color);
 	}
 	m_lines.clear();
+	for (Circle circle : m_circles)
+	{
+		DrawCircle(circle.start, circle.radius, circle.color);
+	}
+	m_circles.clear();
 }
 
 void Util::QueueLine(glm::vec2 start, glm::vec2 end, glm::vec4 colour)
 {
 	m_lines.push_back(Line(start, end, colour));
+}
+
+void Util::QueueCircle(glm::vec2 start, float r, glm::vec4 colour)
+{
+	m_circles.push_back(Circle(start, r, colour));
 }
 
 /**

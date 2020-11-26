@@ -6,19 +6,18 @@
 #include "ship.h"
 #include <GLM/gtx/norm.hpp>
 
+#include "PhysicsManager.h"
+
 class AdvancedCollisionManager
 {
 public:
-	static float SweptAABB(GameObject* obj1, GameObject* obj2, glm::vec2& normal);
-	static float SweptAABB(GameObject* obj, glm::vec2& normal);
+	static struct Manifold SweptAABB(GameObject* obj1, GameObject* obj2);
+	static struct Manifold SweptAABB(GameObject* obj);
 	
 private:
-	static float SweptRectRect(GameObject* obj1, GameObject* obj2, glm::vec2& normal);
-	static float SweptCircleRect(GameObject* obj1, GameObject* obj2, glm::vec2& normal);
-	static float SweptCircleCircle(GameObject* obj1, GameObject* obj2, glm::vec2& normal);
-
-	static void ResolveCollision(GameObject* A, GameObject* B, glm::vec2 normal);
-	static void PositionalCorrection(GameObject* A, GameObject* B, glm::vec2 normal, float penetration);
+	static struct Manifold SweptRectRect(GameObject* obj1, GameObject* obj2);
+	static struct Manifold SweptCircleRect(GameObject* obj1, GameObject* obj2);
+	//static float SweptCircleCircle(GameObject* obj1, GameObject* obj2, glm::vec2& normal);
 	
 	AdvancedCollisionManager();
 	~AdvancedCollisionManager();

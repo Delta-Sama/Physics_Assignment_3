@@ -10,11 +10,11 @@ class Config {
 public:
 	static const int SCREEN_WIDTH = 1000;
 	static const int SCREEN_HEIGHT = 600;
-	static const int FPS = 60;
+	static int FPS;
 
 	static const int BOTTOM_BORDER = SCREEN_HEIGHT * 0.95;
 
-	static constexpr float MAX_ROTATION = 10.0f;
+	static constexpr float MAX_ROTATION = 12.0f;
 	static const int NUMBER_OF_BULLETS = 15;
 
 	static constexpr float ENERGY_LOSS = 0.85f;

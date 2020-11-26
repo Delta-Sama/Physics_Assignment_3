@@ -4,9 +4,7 @@
 #include <Windows.h>
 
 #include "Game.h"
-
-const int FPS = 60;
-const int DELAY_TIME = 1000.0f / FPS;
+#include "Config.h"
 
 int main(int argc, char * args[])
 {
@@ -30,7 +28,9 @@ int main(int argc, char * args[])
 		TheGame::Instance()->render();
 
 		frameTime = SDL_GetTicks() - frameStart;
-		if (frameTime< DELAY_TIME)
+
+		const float DELAY_TIME = 1000.0f / (float)Config::FPS;
+		if (frameTime < DELAY_TIME)
 		{
 			SDL_Delay(int(DELAY_TIME - frameTime));
 		}

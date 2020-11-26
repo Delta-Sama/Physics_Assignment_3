@@ -16,6 +16,14 @@ struct Line
 	glm::vec4 color;
 };
 
+struct Circle
+{
+	Circle(glm::vec2 s, float r, glm::vec4 c) : start(s), radius(r), color(c) {};
+	glm::vec2 start;
+	float radius;
+	glm::vec4 color;
+};
+
 class Util
 {
 public:
@@ -60,9 +68,11 @@ public:
 	static void DrawCapsule(glm::vec2 position, int width, int height, glm::vec4 colour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 
 	static void QueueLine(glm::vec2 start, glm::vec2 end, glm::vec4 colour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-
+	static void QueueCircle(glm::vec2 start, float r, glm::vec4 colour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	
 private:
 	static std::vector<Line> m_lines;
+	static std::vector<Circle> m_circles;
 	
 };
 

@@ -32,16 +32,14 @@ void BouncingBall::update()
 {
 	getTransform()->rotation.x += std::clamp(getRigidBody()->velocity.x,
 		-Config::MAX_ROTATION, Config::MAX_ROTATION);
-	
-	getRigidBody()->velocity.y += -Config::g / Config::FPS;
+
+	//getRigidBody()->velocity.y += -Config::g / Config::FPS;
 
 	// Swept collision
 	PhysicsManager::CheckWorldCollision(*this);
 	
-	glm::vec2 normal;
-	float collision_time = ADCOMA::SweptAABB(this, normal);
-	CollisionResponse(collision_time, normal);
-
+	const struct Manifold result = ADCOMA::SweptAABB(this);
+	CollisionResponse(result.collisionTime, result.normal);
 	
 }
 
