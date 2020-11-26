@@ -2,9 +2,19 @@
 #ifndef __UTIL__
 #define __UTIL__
 
+#include <vector>
+
 #include "GLM/vec2.hpp"
 #include "GLM/vec4.hpp"
 #include "ShapeType.h"
+
+struct Line
+{
+	Line(glm::vec2 s, glm::vec2 e, glm::vec4 c) : start(s), end(e), color(c) {};
+	glm::vec2 start;
+	glm::vec2 end;
+	glm::vec4 color;
+};
 
 class Util
 {
@@ -12,6 +22,8 @@ public:
 	Util();
 	~Util();
 
+	static void DrawQueue();
+	
 	static const float EPSILON;
 	static const float Deg2Rad;
 	static const float Rad2Deg;
@@ -46,6 +58,12 @@ public:
 	static void DrawRect(glm::vec2 position, int width, int height, glm::vec4 colour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 	static void DrawCircle(glm::vec2 centre, int radius, glm::vec4 colour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), ShapeType type = SYMMETRICAL);
 	static void DrawCapsule(glm::vec2 position, int width, int height, glm::vec4 colour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+
+	static void QueueLine(glm::vec2 start, glm::vec2 end, glm::vec4 colour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+
+private:
+	static std::vector<Line> m_lines;
+	
 };
 
 

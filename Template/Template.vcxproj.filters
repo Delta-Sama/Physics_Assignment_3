@@ -156,6 +156,12 @@
     <ClCompile Include="..\src\AdvancedCollisionManager.cpp">
       <Filter>Managers\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Crate.cpp">
+      <Filter>Game Objects\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\PhysicsManager.cpp">
+      <Filter>Managers\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\GameObjectType.h">
@@ -285,6 +291,12 @@
       <Filter>Game Objects\Header</Filter>
     </ClInclude>
     <ClInclude Include="..\src\AdvancedCollisionManager.h">
+      <Filter>Managers\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Crate.h">
+      <Filter>Game Objects\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\PhysicsManager.h">
       <Filter>Managers\Header</Filter>
     </ClInclude>
   </ItemGroup>

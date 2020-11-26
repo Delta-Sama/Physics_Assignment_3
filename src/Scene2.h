@@ -4,6 +4,7 @@
 
 #include "BouncingBall.h"
 #include "Bullet.h"
+#include "Crate.h"
 #include "Scene.h"
 #include "ship.h"
 
@@ -21,6 +22,7 @@ public:
 	virtual void start() override;
 private:
 	BouncingBall* m_ball;
+	Crate* m_crate;
 
 };
 

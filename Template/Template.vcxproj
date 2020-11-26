@@ -163,10 +163,12 @@
     <ClCompile Include="..\src\BouncingBall.cpp" />
     <ClCompile Include="..\src\Button.cpp" />
     <ClCompile Include="..\src\CollisionManager.cpp" />
+    <ClCompile Include="..\src\Crate.cpp" />
     <ClCompile Include="..\src\Enemy.cpp" />
     <ClCompile Include="..\src\Bullet.cpp" />
     <ClCompile Include="..\src\MathManager.cpp" />
     <ClCompile Include="..\src\ObjectPoolManager.cpp" />
+    <ClCompile Include="..\src\PhysicsManager.cpp" />
     <ClCompile Include="..\src\Scene2.cpp" />
     <ClCompile Include="..\src\Sprite.cpp" />
     <ClCompile Include="..\src\UIControl.cpp" />
@@ -199,10 +201,12 @@
     <ClInclude Include="..\src\CollisionManager.h" />
     <ClInclude Include="..\src\CollisionShape.h" />
     <ClInclude Include="..\src\Config.h" />
+    <ClInclude Include="..\src\Crate.h" />
     <ClInclude Include="..\src\Enemy.h" />
     <ClInclude Include="..\src\Bullet.h" />
     <ClInclude Include="..\src\MathManager.h" />
     <ClInclude Include="..\src\ObjectPoolManager.h" />
+    <ClInclude Include="..\src\PhysicsManager.h" />
     <ClInclude Include="..\src\Scene2.h" />
     <ClInclude Include="..\src\SoundType.h" />
     <ClInclude Include="..\src\Sprite.h" />

@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include "Renderer.h"
 
+std::vector<Line> Util::m_lines;
+
 const float Util::EPSILON = glm::epsilon<float>();
 const float Util::Deg2Rad = glm::pi<float>() / 180.0f;
 const float Util::Rad2Deg = 180.0f / glm::pi<float>();
@@ -14,6 +16,20 @@ Util::Util()
 
 Util::~Util()
 = default;
+
+void Util::DrawQueue()
+{
+	for (Line line : m_lines)
+	{
+		DrawLine(line.start, line.end, line.color);
+	}
+	m_lines.clear();
+}
+
+void Util::QueueLine(glm::vec2 start, glm::vec2 end, glm::vec4 colour)
+{
+	m_lines.push_back(Line(start, end, colour));
+}
 
 /**
 * Returns -1.0 if the value is less than 0 and 1.0 if the value is greater than 0

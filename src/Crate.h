@@ -1,14 +1,14 @@
 #pragma once
-#ifndef __BALL_H__
-#define __BALL_H__
+#ifndef __CRATE_H__
+#define __CRATE_H__
 
 #include "Sprite.h"
 
-class BouncingBall final : public Sprite
+class Crate final : public Sprite
 {
 public:
-	BouncingBall(glm::vec2 pos);
-	~BouncingBall();
+	Crate(glm::vec2 pos, glm::vec2 size = glm::vec2(40,40));
+	~Crate();
 
 	// Life Cycle Functions
 	virtual void draw() override;
@@ -18,7 +18,7 @@ public:
 	void CollisionResponse(float collision_time, glm::vec2 normal);
 
 private:
-	
+
 };
 
-#endif /* defined (__PLANE__) */
+#endif

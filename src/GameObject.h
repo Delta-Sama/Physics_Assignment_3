@@ -9,7 +9,6 @@
 // enums
 #include "GameObjectType.h"
 
-
 class GameObject {
 public:
 	GameObject();
@@ -31,6 +30,8 @@ public:
 	RigidBody* getRigidBody();
 	
 	// getters and setters for game object properties
+	CollisionShape getShape() { return getRigidBody()->shape; }
+	void setShape(CollisionShape shape) { getRigidBody()->shape = shape; }
 	int getWidth() const;
 	int getHeight() const;
 	void setWidth(int new_width);

@@ -1,6 +1,7 @@
 #pragma once
 #ifndef __MATHMANAGER_H__
 #define __MATHMANAGER_H__
+#include <glm/detail/type_vec2.hpp>
 
 class MathManager
 {
@@ -11,6 +12,9 @@ public:
 	static float DegToRad(float deg);
 
 	static float To180Deg(float deg);
+
+	static glm::vec2 Project(glm::vec2 to_project, glm::vec2 axis);
+	static float DotProduct(glm::vec2 A, glm::vec2 B);
 	
 private:
 

@@ -23,3 +23,17 @@ float MathManager::To180Deg(float deg)
 	}
 	return deg;
 }
+
+glm::vec2 MathManager::Project(glm::vec2 to_project, glm::vec2 axis)
+{
+	
+	const float axis_len = sqrt(axis.x * axis.x + axis.y * axis.y);
+	const glm::vec2 axis_unit = glm::vec2(axis.x / axis_len, axis.y / axis_len);
+	float proj = to_project.x * axis_unit.x + to_project.y * axis_unit.y;
+	return glm::vec2(axis_unit.x * proj, axis_unit.y * proj);
+}
+
+float MathManager::DotProduct(glm::vec2 A, glm::vec2 B)
+{
+	return A.x * B.x + A.y * B.y;
+}
