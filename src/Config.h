@@ -23,7 +23,7 @@ public:
 	static constexpr float BULLET_SPEED = 3.0f;
 	
 	static constexpr float METERS_TO_PIXELS = 3;
-	//static constexpr float PIX_TO_MET = 1 / MET_TO_PIX;
+	static constexpr float PIXELS_TO_METERS = 1 / METERS_TO_PIXELS;
 	
 	// Define Custom Deleters for shared_ptr types
 	static void SDL_DelRes(SDL_Window* r) { SDL_DestroyWindow(r); }

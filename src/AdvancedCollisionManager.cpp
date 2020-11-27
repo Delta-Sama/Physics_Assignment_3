@@ -261,7 +261,7 @@ Manifold AdvancedCollisionManager::SweptCircleRect(GameObject* obj1, GameObject*
 	
 	float odd_move = (radius + glm::dot(dist, result.normal)) / sin(angle);
 	float speed = sqrt(vel1.x * vel1.x + vel1.y * vel1.y);
-	std::cout << "odd_move: " << odd_move << "\n";
+	//std::cout << "odd_move: " << odd_move << "\n";
 	result.collisionTime = std::clamp(1.0f - odd_move / speed,0.0f,0.99f);
 
 	return result;

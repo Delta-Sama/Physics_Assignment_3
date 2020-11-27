@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+
+#include "MathManager.h"
 #include "Util.h"
 
 std::list<GameObject*> PhysicsManager::m_physical_objects;
@@ -33,23 +35,53 @@ float PhysicsManager::CheckWorldCollision(GameObject& obj)
 			obj.getTransform()->position.x += obj.getRigidBody()->velocity.x * result.collisionTime;
 			obj.getTransform()->position.y += obj.getRigidBody()->velocity.y * result.collisionTime;
 
+			// Next step 1: take into account the crate velocity to resolve the collision for BOTH objects, not only ball
+			// Next step 2 (might be a part of the step 1): fix the ball teleportation when the ball has 0 velocity
+			
 			if (abs(result.normal.x) > 0.0001f)
 			{
-				bool opposite_vel = (obj.getRigidBody()->velocity.x >= 0 && (*it)->getRigidBody()->velocity.x <= 0)
+				const bool opposite_vel = (obj.getRigidBody()->velocity.x >= 0 && (*it)->getRigidBody()->velocity.x <= 0)
 				|| (obj.getRigidBody()->velocity.x <= 0 && (*it)->getRigidBody()->velocity.x >= 0);
-				
-				if (opposite_vel) // Moving toward each other
+
+				const float vel_along_normal = ((*it)->getRigidBody()->velocity.x + obj.getRigidBody()->velocity.x) * result.normal.x * Config::PIXELS_TO_METERS;
+				std::cout << "vel_along_normal = " << vel_along_normal << "\n";
+
+				if (vel_along_normal < 0)
 				{
+					std::cout << "Resolving impulse\n";
+
+					float mass_sum = obj.getRigidBody()->mass + (*it)->getRigidBody()->mass;
+					
+					float impulse_length = (-(1 + e) * vel_along_normal) / (obj.getRigidBody()->inverse_mass + (*it)->getRigidBody()->inverse_mass);
+					glm::vec2 impulse = impulse_length * result.normal;
+
+					float ratio = obj.getRigidBody()->mass / mass_sum;
+					obj.getRigidBody()->velocity += ratio * impulse;
+
+					ratio = (*it)->getRigidBody()->mass / mass_sum;
+					(*it)->getRigidBody()->velocity -= ratio * impulse;
+				}
+				else
+				{
+					std::cout << "Vel is more than 0, :" << vel_along_normal << " \n";
+				}
+				
+				/*if (opposite_vel) // Moving toward each other
+				{
+					std::cout << "Opposite vel: Crate.x = " << (*it)->getRigidBody()->velocity.x << ", ball.x = " << obj.getRigidBody()->velocity.x << " \n";
 					obj.getRigidBody()->velocity.x = -obj.getRigidBody()->velocity.x;
 					(*it)->getRigidBody()->velocity.x = -(*it)->getRigidBody()->velocity.x;
 				}
-				else // One is catching up another
+				else // One is catching up other
 				{
+					//Config::FPS = 1;
+					std::cout << "Same vel\n";
+					
 					if (obj.getRigidBody()->mass > (*it)->getRigidBody()->mass)
 						(*it)->getRigidBody()->velocity.x = -(*it)->getRigidBody()->velocity.x;
 					else
 						obj.getRigidBody()->velocity.x = -obj.getRigidBody()->velocity.x;
-				}
+				}*/
 			}
 			if (abs(result.normal.y) > 0.0001f)
 			{

@@ -60,13 +60,13 @@ void Scene2::handleEvents()
 		m_crate->getRigidBody()->velocity = { 0.0f,0.0f };
 		if (EventManager::Instance().KeyPressed(SDL_SCANCODE_A))
 		{
-			m_ball->getTransform()->position = { 100.0f, 350.0f };
-			m_crate->getTransform()->position = { 600.0f, 350.0f };
+			m_ball->getTransform()->position = { 350.0f, 350.0f };
+			m_crate->getTransform()->position = { 550.0f, 350.0f };
 		}
 		else if (EventManager::Instance().KeyPressed(SDL_SCANCODE_D))
 		{
-			m_ball->getTransform()->position = { 600.0f, 350.0f };
-			m_crate->getTransform()->position = { 100.0f, 350.0f };
+			m_ball->getTransform()->position = { 550.0f, 350.0f };
+			m_crate->getTransform()->position = { 350.0f, 350.0f };
 		}
 		else if (EventManager::Instance().KeyPressed(SDL_SCANCODE_S))
 		{
