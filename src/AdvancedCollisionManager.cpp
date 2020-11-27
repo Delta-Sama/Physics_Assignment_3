@@ -197,8 +197,8 @@ Manifold AdvancedCollisionManager::SweptCircleRect(GameObject* obj1, GameObject*
 	const glm::vec2 vel1 = obj1->getRigidBody()->velocity;
 	const glm::vec2 vel2 = obj1->getRigidBody()->velocity;
 
-	const glm::vec2 pos1 = obj1->getTransform()->position;
-	const glm::vec2 pos2 = obj2->getTransform()->position;
+	glm::vec2 pos1 = obj1->getTransform()->position;
+	glm::vec2 pos2 = obj2->getTransform()->position;
 
 	const glm::vec2 movedPos1 = pos1 + vel1;
 	const glm::vec2 movedPos2 = pos2 + vel2;
@@ -228,10 +228,14 @@ Manifold AdvancedCollisionManager::SweptCircleRect(GameObject* obj1, GameObject*
 	{
 		result.normal.x = 0.0f;
 		result.normal.y = 0.0f;
+		result.result = false;
 		result.collisionTime = 1.0f;
 		return result;
 	}
+
+	result.result = true;
 	
+	std::cout << "Collision\n";
 	// Determine the normal
 	glm::vec2 dist;
 	glm::vec2 border;
@@ -255,14 +259,50 @@ Manifold AdvancedCollisionManager::SweptCircleRect(GameObject* obj1, GameObject*
 		dist = { 0.0f, abs(movedPos1.y - (movedPos2.y + result.normal.y * size2.y / 2)) * -result.normal.y };
 	}
 
-
 	float angle = acos((vel1.x * border.x + vel1.y * border.y) /
-		(sqrt(vel1.x * vel1.x + vel1.y * vel1.y) * sqrt(border.x * border.x + border.y * border.y)));
+		(sqrt(vel1.x * vel1.x + vel1.y * vel1.y) * 1));
+	if (vel1.x == 0 && vel1.y == 0)
+		angle = 0;
 	
 	float odd_move = (radius + glm::dot(dist, result.normal)) / sin(angle);
 	float speed = sqrt(vel1.x * vel1.x + vel1.y * vel1.y);
-	//std::cout << "odd_move: " << odd_move << "\n";
+	
 	result.collisionTime = std::clamp(1.0f - odd_move / speed,0.0f,0.99f);
 
+	// Fix the circle position
+	obj1->getTransform()->position.x += obj1->getRigidBody()->velocity.x * result.collisionTime;
+	obj1->getTransform()->position.y += obj1->getRigidBody()->velocity.y * result.collisionTime;
+
+	// Set new tests
+	testX = obj1->getTransform()->position.x;
+	testY = obj1->getTransform()->position.y;
+
+	// Apply the crate velocity
+	obj2->getTransform()->position.x += obj2->getRigidBody()->velocity.x;
+	obj2->getTransform()->position.y += obj2->getRigidBody()->velocity.y;
+
+	// Redefine positions
+	pos1 = obj1->getTransform()->position;
+	pos2 = obj2->getTransform()->position;
+	
+	if (pos1.x < pos2.x - size2.x / 2) testX = pos2.x - size2.x / 2; // left edge
+	else if (pos1.x > pos2.x + size2.x / 2) testX = pos2.x + size2.x / 2; // right edge
+
+	if (pos1.y < pos2.y - size2.y / 2) testY = pos2.y - size2.y / 2; // top edge
+	else if (pos1.y > pos2.y + size2.y / 2) testY = pos2.y + size2.y / 2; // bottom edge
+	
+	// dif = difference between the collision point and the center
+	bool moving = abs(obj2->getRigidBody()->velocity.x) > 0.01f || abs(obj2->getRigidBody()->velocity.y) > 0.01f;
+	float r = (float)obj1->getWidth() / 2;
+	glm::vec2 dif = glm::vec2(testX, testY) - obj1->getTransform()->position;
+	float dif_len = sqrt(dif.x * dif.x + dif.y * dif.y);
+	if (dif_len < r && moving) // Circle is still inside
+	{
+		//std::cout << "Circle is inside: " << dif_len << "/" << r << "\n";
+		glm::vec2 move = MAMA::Project(dif, result.normal);
+		obj2->getTransform()->position += - move * 0.9f - r * result.normal;
+		
+	}
+	
 	return result;
 }

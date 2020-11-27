@@ -13,6 +13,7 @@
 
 struct Manifold
 {
+	bool result;
 	GameObject* A;
 	GameObject* B;
 	glm::vec2 normal;
